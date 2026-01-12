@@ -32,7 +32,7 @@ jobs:
       - name: Checkout node-upgrade-agent
         uses: actions/checkout@v4
         with:
-          repository: <YOUR_GITHUB_USERNAME>/node-upgrade-agent
+          repository: appy44/node-upgrade-agent
           path: node-upgrade-agent
 
       # 4️⃣ Run the upgrade CLI
