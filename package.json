@@ -1,0 +1,27 @@
+{
+  "name": "upgrade-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appy44/node-upgrade-agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "node-upgrade-agent": ".cli/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/appy44/node-upgrade-agent/issues"
+  },
+  "homepage": "https://github.com/appy44/node-upgrade-agent#readme"
+}
