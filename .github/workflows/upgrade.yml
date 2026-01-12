@@ -1,0 +1,66 @@
+name: Central Node Upgrade Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      target-node:
+        required: false
+        default: "22"
+        type: string
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # 1️⃣ Checkout PRODUCT repo (this is automatic context)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node for runner (not the target node)
+      - name: Setup Node.js for runner
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # 3️⃣ Checkout node-upgrade-agent repo (tooling)
+      - name: Checkout node-upgrade-agent
+        uses: actions/checkout@v4
+        with:
+          repository: <YOUR_GITHUB_USERNAME>/node-upgrade-agent
+          path: node-upgrade-agent
+
+      # 4️⃣ Run the upgrade CLI
+      - name: Run Node Upgrade Agent
+        run: |
+          node node-upgrade-agent/cli/index.js
+
+      # 5️⃣ Install dependencies after upgrade
+      - name: Install dependencies
+        run: npm install
+
+      # 6️⃣ Run tests
+      - name: Run tests
+        run: npm test
+
+      # 7️⃣ Create Pull Request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: upgrade Node.js to 22"
+          title: "chore: upgrade Node.js to 22"
+          body: |
+            ## Automated Node.js Upgrade
+
+            - Node engine upgraded to **${{ inputs.target-node }}**
+            - Dependencies reinstalled
+            - Tests executed successfully
+
+            This PR was created automatically by **node-upgrade-agent**.
+          branch: chore/node-${{ inputs.target-node }}-upgrade
+          delete-branch: true
